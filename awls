@@ -28,6 +28,7 @@ class AWSInventoryTable(object):
                                 aws_name = tag['Value']
                                 aws_private_ip = instance.private_ip_address
                                 aws_public_ip = instance.public_ip_address
+                                aws_launch_time = instance.launch_time
                                 found = True
                             else:
                                 found = False
@@ -35,6 +36,7 @@ class AWSInventoryTable(object):
                             aws_name = tag['Value']
                             aws_private_ip = instance.private_ip_address
                             aws_public_ip = instance.public_ip_address
+                            aws_launch_time = instance.launch_time
                             found = True
 
                     if tag['Key'] == "Maintenance":
@@ -42,11 +44,11 @@ class AWSInventoryTable(object):
 
             if found:
                 if maintenance_tags:
-                    tbl_list.append([aws_name, aws_private_ip, aws_public_ip, aws_maintenance_tags])
-                    headers = ["fqdn", "private_ip", "public_ip", "maintenance_tags"]
+                    tbl_list.append([aws_name, aws_private_ip, aws_public_ip, aws_launch_time, aws_maintenance_tags])
+                    headers = ["fqdn", "private_ip", "public_ip","launch_time","maintenance_tags"]
                 else:
-                    tbl_list.append([aws_name, aws_private_ip, aws_public_ip])
-                    headers = ["fqdn", "private_ip", "public_ip"]
+                    tbl_list.append([aws_name, aws_private_ip, aws_public_ip, aws_launch_time])
+                    headers = ["fqdn", "private_ip", "public_ip","launch_time"]
 
         # Return pretty data
         print(tabulate(tbl_list, headers=headers, tablefmt="psql"))
